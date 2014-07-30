@@ -5,7 +5,9 @@
  *
  * @author: Atsushi Sakai 
  *
- * @lisence: GPL Lisecense
+ * @copyright (c): 2014 Atsushi Sakai
+ *
+ * @license : GPL Software License Agreement
  **/
 
 #include <iostream>
@@ -14,7 +16,6 @@
 using namespace std;
 
 //クラスのプロトタイプ宣言
-class BookShelf;
 class IteratorInterface;
 class AggregateInterface;
 
@@ -59,23 +60,6 @@ class AggregateInterface{
     virtual IteratorInterface* Iterator(void)=0;
 };
 
-/**
- * @brief BookShelfクラス用イテレータクラス
- */
-class BookShelfIterator:public IteratorInterface{
-  public:
-    BookShelfIterator(BookShelf* bookShelf)
-    :index_(0),
-     bookShelf_(bookShelf)
-    {}
-
-    bool IsLast(void);
-    Book Next(void);
-
-  private:
-    BookShelf* bookShelf_;//DBのポインタ
-    int index_;//イテレータのインデックス
-};
 
 /**
  *  @brief 本棚を表すクラス
@@ -118,9 +102,7 @@ class BookShelf : public AggregateInterface{
     /**
      * @brief BookShelfのイテレータを返す関数
      */
-    IteratorInterface* Iterator(void){
-      return new BookShelfIterator(this);
-    }
+    IteratorInterface* Iterator(void);
 
   private:
     vector<Book> books_;//本のデータを格納するDB
@@ -128,10 +110,36 @@ class BookShelf : public AggregateInterface{
 };
 
 /**
+ * @brief BookShelfクラス用イテレータクラス
+ */
+class BookShelfIterator:public IteratorInterface{
+  public:
+    BookShelfIterator(BookShelf bookShelf)
+    :index_(0),bookShelf_(bookShelf)
+    {}
+
+    bool IsLast(void);
+    Book Next(void);
+
+  private:
+    BookShelf bookShelf_;
+    int index_;//イテレータのインデックス
+};
+
+/**
+ * @brief BookShelfのイテレータを返す関数
+ */
+IteratorInterface* BookShelf::Iterator(void){
+  return new BookShelfIterator(*this);
+}
+
+
+
+/**
  * @brief イテレータの指し示す要素が最後かどうかを確認する関数
  */
 bool BookShelfIterator::IsLast(void){
-  if(index_<(bookShelf_->GetNBooks())){
+  if(index_<(bookShelf_.GetNBooks())){
       return true;
   }
   else{
@@ -144,7 +152,7 @@ bool BookShelfIterator::IsLast(void){
  *        イテレータのインデックスを一つ進める関数
  */
 Book BookShelfIterator::Next(void){
-  Book book=bookShelf_->GetBookAt(index_);
+  Book book=bookShelf_.GetBookAt(index_);
   index_++;
   return book;
 }
