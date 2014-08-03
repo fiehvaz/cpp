@@ -76,32 +76,39 @@ class Factory{
     /**
      *  @brief Productを生成し、そのインスタンスを返す関数
     */
-    Product* Create(string name){
-      Product* p=CreateProduct(name); 
+    Product* Create(string type,string name){
+      Product* p=CreateProduct(type,name); 
       return p;
     }
 
   private:
-    virtual Product* CreateProduct(string name)=0;
+    /**
+     *  @brief Productを作成する純粋仮想関数
+     *  @param type Productの種類
+     *  @param name Productの所有者の名前
+     */
+    virtual Product* CreateProduct(string type, string name)=0;
 };
 
 /**
- *  @brief IDCardを作るFactoryクラス
+ *  @brief 文房具を作るFactoryクラス
  */
-class IDCardFactory: public Factory{
+class StationeryFactory: public Factory{
   public:
-    Product* CreateProduct(string name){
-      return new IDCard(name);
-    }
-};
-
-/**
- *  @brief BusinessCardを作るFactoryクラス
- */
-class BusinessCardFactory: public Factory{
-  public:
-    Product* CreateProduct(string name){
-      return new BusinessCard(name);
+    /**
+     * @brief Productを作成する関数
+     */
+    Product* CreateProduct(string type,string name){
+      if(type=="BusinessCard"){
+        return new BusinessCard(name);
+      }
+      else if(type=="IDCard"){
+        return new IDCard(name);
+      }
+      else{
+        cout<<"Unknown Stationery:"<<type<<endl;
+        return 0;
+      }
     }
 };
 
@@ -109,14 +116,13 @@ int main(void){
   cout<<"Factory Method Pattern Sample Start!!"<<endl;
 
   //Factoryの作成
-  Factory *IDfactory=new IDCardFactory(); 
-  Factory *businessCardfactory=new BusinessCardFactory(); 
+  Factory *factory=new StationeryFactory(); 
 
   //Factoryから文房具を生成する
-  Product *item1  = IDfactory->Create("TOM");
-  Product *item2  = IDfactory->Create("SAM");
-  Product *item3  = businessCardfactory->Create("RAI");
-  Product *item4  = businessCardfactory->Create("TED");
+  Product *item1  = factory->Create("BusinessCard","TOM");
+  Product *item2  = factory->Create("BusinessCard","SAM");
+  Product *item3  = factory->Create("IDCard","RAI");
+  Product *item4  = factory->Create("IDCard","TED");
 
   //それぞれの文房具を使用する
   item1->Use();
