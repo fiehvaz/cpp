@@ -119,9 +119,8 @@ class ConcreteMediator:public Mediator{
      */
     void ColleageModeChangeed(const string &name){
       //イテレータの作成
-      map<string, Colleages*>::iterator it;
       //DBを探索して他のColleageに変更があったことを伝える
-      for (it=colleages_.begin();it!=colleages_.end();++it){
+      for (auto it=colleages_.begin();it!=colleages_.end();++it){
         if(it->first!=name){
           it->second->ReceiveModeChange(name);
         }
@@ -133,8 +132,7 @@ class ConcreteMediator:public Mediator{
      */
     void ChangeMode(const string &name){
       //イテレータの作成
-      map<string, Colleages*>::iterator it;
-      for (it=colleages_.begin();it!=colleages_.end();++it){
+      for(auto it=colleages_.begin();it!=colleages_.end();++it){
         if(it->first==name){
           it->second->ModeChange();
         }
