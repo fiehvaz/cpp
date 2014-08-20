@@ -10,10 +10,12 @@
  * @license : GPL Software License Agreement
  **/
 
-#include <time.h>//乱数初期化用
+//#include <time.h>//乱数初期化用
 
 #include <iostream>
 #include <vector>
+#include <random>
+#include <ctime>
 
 using namespace std;
 
@@ -96,9 +98,7 @@ class StarObserver:public Observer{
  **/
 class RandomNumberGenerator:public NumberGenerator{
   public:
-    RandomNumberGenerator(void){
-      srand((unsigned int)time(NULL));//乱数初期化
-    }
+    RandomNumberGenerator(void){}
 
    /**
     *  @brief 生成された乱数を返す関数 
@@ -109,14 +109,19 @@ class RandomNumberGenerator:public NumberGenerator{
     *  @brief 乱数を10個発生させ、オブザーバに通知する関数 
     */
     void Generate(void){
+      // メルセンヌ・ツイスター法による擬似乱数生成器を、
+      // ハードウェア乱数をシードにして初期化
+      mt19937 engine_(static_cast<unsigned int>(time(nullptr)));
+      uniform_int_distribution<int> dist(0,100);
       for(int i=0;i<10;i++){
-        number_=rand()%100;
+        number_=static_cast<int>(dist(engine_));
         Notify();//登録されたオブザーバーに通知 
       }
     }
     
   private:
     int number_;//生成した値
+    mt19937 engine_;//乱数発生エンジン
 };
 
 
