@@ -26,8 +26,8 @@ class Memento{
 };
 
 /**
- *  @brief 
- *  */
+ *  @brief 数字を生成するクラス
+ **/
 class Number{
   public:
     Number(int num):num_(num){}
