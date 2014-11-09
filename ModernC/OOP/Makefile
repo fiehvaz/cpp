@@ -1,4 +1,4 @@
-#Makefile AtsushiSakai
+#Makefile by AtsushiSakai
 OOP : OOP.o Person.o
 				g++ -o OOP OOP.o Person.o
 
