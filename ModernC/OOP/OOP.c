@@ -11,6 +11,7 @@
  **/
 
 #include <stdio.h>
+#include "Person.h"
 
 typedef struct Animal{
 
@@ -18,6 +19,8 @@ typedef struct Animal{
 
 int main(void){
   //cout<<"Factory Method Pattern Sample Start!!"<<endl;
+  //
+  PersonTest();
 
   return 0;
 }
