@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include "Person.h"
 #include "Dog.h"
+#include "Teacher.h"
 
 typedef struct Animal{
   void (*Bark)(void);
@@ -34,6 +35,18 @@ int main(void){
 
   person.Bark();
   dog.Bark();
+
+  //===継承のサンプル===
+  printf("===継承のサンプル===\n");
+  Person student;
+  student.age=15;
+  Person_SayAge(student);
+
+  Teacher teacher;
+  teacher.base.age=30;
+  Person_SayAge(teacher.base);
+  teacher.nStudent=10;
+  Teacher_Bark(teacher);
 
   return 0;
 }
